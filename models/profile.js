@@ -3,6 +3,10 @@ const Shema = mongoose.Schema;
 
 
 const profileShema = new Shema({
+    _id:{
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         required: true
@@ -10,10 +14,6 @@ const profileShema = new Shema({
     password: {
         type: String,
         required: true
-    },
-    verified:{
-        type:Boolean,
-        required:true,
     },
     profileData:{
         firstName: {

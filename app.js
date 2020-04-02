@@ -2,7 +2,7 @@ const express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const profileRoutes = require("./routes/profile");
-
+const authRoutes = require("./routes/auth");
 const app= express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -16,7 +16,13 @@ app.use((req,res,next)=>{
 })
 
 app.use("/profile", profileRoutes);
+app.use("/auth", authRoutes);
 
+
+//Error handler
+app.use((error,req,res,next)=>{
+    console.log(error);
+})
 
 mongoose.connect(
     "mongodb+srv://AleksaOpacic:opacicaleksa32@cluster0-cplrq.mongodb.net/MTDSmartCard?retryWrites=true&w=majority"
