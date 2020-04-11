@@ -10,15 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sendgrid/mail": "^7.0.0",
     "arraywrap": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.1.1",
     "express-validator": "^6.4.0",
+    "googleapis": "^48.0.0",
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.2",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.4.6",
     "vcards-js": "^2.10.0"
   },
   "devDependencies": {

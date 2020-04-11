@@ -1,5 +1,6 @@
 const express = require("express");
-const {body}= require("express-validator/check");
+const { body } = require("express-validator");
+const rateLimit = require("express-rate-limit");
 //Models
 const Profile = require("../models/profile");
 //Controllers
@@ -7,35 +8,38 @@ const authController = require("../controllers/auth");
 
 const router = express.Router();
 
-
 //GET /auth/signup
-router.put("/signup",[
-    body('id')
-    .trim()
-    .isLength({min: 8, max:8})
-    .withMessage("Error with id"),
+router.put(
+  "/signup",
+  [
+    body("id").trim().isLength({ min: 8, max: 8 }).withMessage("Error with id"),
 
-   body('email')
-    .isEmail()
-    .withMessage("Please enter a valid email.")
-    .normalizeEmail(),
+    body("email")
+      .isEmail()
+      .withMessage("Please enter a valid email.")
+      .normalizeEmail(),
 
-   body('password')
-    .trim()
-    .isLength({min: 5}),
-   
-   body('firstName')
-    .trim()
-    .not()
-    .isEmpty(),
+    body("password").trim().isLength({ min: 5 }),
 
-   body('lastName')
-    .trim()
-    .not()
-    .isEmpty(), 
-],authController.signup);
+    body("firstName").trim().not().isEmpty(),
+
+    body("lastName").trim().not().isEmpty(),
+  ],
+  authController.signup
+);
+
+const createAccountLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour window
+  max: 5, // start blocking after 5 requests
+  message:
+    "Too many accounts created from this IP, please try again after an hour",
+});
+//POST /auth/login
+router.post("/login", createAccountLimiter, authController.login);
 
 //POST /auth/login
-router.post("/login",authController.login)
+router.post("/fillData", createAccountLimiter, authController.fillData);
 
-module.exports= router;
+//GET /auth/validateProfile/
+router.get("/validateProfile/:token", authController.validateProfile);
+module.exports = router;
