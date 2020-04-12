@@ -73,65 +73,56 @@ exports.fillData = (req, res, next) => {
     });
 };
 
-exports.validateProfile = (req, res, next) => {
+exports.validateProfile = async (req, res, next) => {
+  console.log("Pocetak");
   const token = req.params.token;
-  Profile.findOne({
-    validationToken: token,
-    validationTokenExpiration: { $gt: Date.now() },
-  })
-    .then((user) => {
+
+  try {
+    const user = await Profile.findOne({
+      validationToken: token,
+    });
+    const token2 = jwt.sign(
+      {
+        email: user.email,
+        userId: user._id,
+      },
+      "!secrethashtagfortokenvalidationsss!!##432",
+      { expiresIn: "1h" }
+    );
+    if (user.validation === true) {
+      return res.status(200).json({
+        token: token2,
+        userId: user._id,
+        verified: true,
+      });
+    }
+    if (user.validationTokenExpiration > Date.now()) {
+      console.log("usao ne treba");
       user.validation = true;
-      user.save();
-      const token = jwt.sign(
-        {
-          email: user.email,
-          userId: user._id,
-        },
-        "!secrethashtagfortokenvalidationsss!!##432",
-        { expiresIn: "1h" }
-      );
-      res.status(200).json({
-        token: token,
+      const saveUser = await user.save();
+
+      return res.status(200).json({
+        token: token2,
         userId: user._id,
       });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
+    } else {
+      console.log("usao");
+      const userDeleted = await Profile.findOneAndDelete({
+        validationToken: token,
+      });
+      return res.status(401).json({
+        msg: "User deleted",
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
 };
 
-exports.validateProfile = (req, res, next) => {
-  const token = req.params.token;
-  Profile.findOne({
-    validationToken: token,
-    validationTokenExpiration: { $gt: Date.now() },
-  })
-    .then((user) => {
-      user.validation = true;
-      user.save();
-      const token = jwt.sign(
-        {
-          email: user.email,
-          userId: user._id,
-        },
-        "!secrethashtagfortokenvalidationsss!!##432",
-        { expiresIn: "1h" }
-      );
-      res.status(200).json({
-        token: token,
-        userId: user._id,
-      });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err);
-    });
-};
 exports.login = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;

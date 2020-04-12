@@ -5,10 +5,30 @@ const profileRoutes = require("./routes/profile");
 const authRoutes = require("./routes/auth");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+var schedule = require("node-schedule");
+
+//models
+const Profile = require("./models/profile");
 
 const app = express();
 var morgan = require("morgan");
 
+var rule = new schedule.RecurrenceRule();
+rule.dayOfWeek = [0, new schedule.Range(1, 6)];
+rule.hour = 20;
+rule.minute = 24;
+//Schedule action
+var j = schedule.scheduleJob(rule, async () => {
+  console.log("Crons started");
+  try {
+    console.log("delete users");
+    const deleteProfiles = await Profile.deleteMany({
+      validationTokenExpiration: { $lt: new Date() },
+    });
+  } catch {
+    console.log("error");
+  }
+});
 //Rate limit
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
