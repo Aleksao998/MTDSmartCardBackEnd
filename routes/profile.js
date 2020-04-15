@@ -17,6 +17,9 @@ router.get("/createVCF", profileController.createVCF);
 router.get("/checkEmail", profileController.checkEmail);
 
 //UPDATE /profile/updateProfile
-router.post("/updateProfile",isAuth, profileController.updateProfile);
+router.post("/updateProfile", isAuth, profileController.updateProfile);
 
-module.exports= router;
+//GET /profile/checkEmail
+router.post("/uploadImage", profileController.uploadImage);
+
+module.exports = router;

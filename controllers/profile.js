@@ -1,7 +1,42 @@
 const Profile = require("../models/profile");
 const arrayWrap = require("arraywrap");
-
 var vCardsJS = require("vcards-js");
+var fs = require("fs");
+const path = require("path");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: function (req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+}).single("myImage");
+
+exports.uploadImage = (req, res, next) => {
+  upload(req, res, (err) => {
+    if (err) {
+      console.log("aleksa");
+      res.render("index", { msg: err });
+      res.send("error uploading");
+    } else {
+      var img = req.body.myImage;
+      console.log(img);
+      var data = img.replace(/^data:image\/\w+;base64,/, "");
+      var buf = new Buffer(data, "base64");
+      fs.writeFile("./public/profile-images/image.png", buf, function (
+        err,
+        result
+      ) {
+        if (err) console.log("error", err);
+      });
+    }
+  });
+};
 
 exports.getProfile = (req, res, next) => {
   userId = req.params.id;
