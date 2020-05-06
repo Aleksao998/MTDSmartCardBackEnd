@@ -2,6 +2,7 @@ const crypto = require("crypto");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+var fs = require("fs");
 
 //Gmail verification
 const nodemailer = require("nodemailer");
@@ -12,23 +13,38 @@ const OAuth2 = google.auth.OAuth2;
 const Profile = require("../models/profile");
 const Credential = require("../models/credentials");
 
+//Utils
+const ProfileFieldConvertor = require("../utils/ProfileFieldConvertor/ProfileFieldCOnvertor");
+
 exports.fillData = (req, res, next) => {
   id = req.body.id;
 
-  mobileNumber = req.body.mobileNumber;
-  homeNumber = req.body.homeNumber;
+  mobileNumber = ProfileFieldConvertor.mobileNumberConvertor(
+    req.body.mobileNumber,
+    "+381"
+  );
+  homeNumber = ProfileFieldConvertor.homeNumberConvertor(
+    req.body.homeNumber,
+    "+381"
+  );
   email = req.body.email;
   workEmail = req.body.workEmail;
 
   twitter = req.body.twitter;
+  twitterUrl = ProfileFieldConvertor.twitterConvertor(req.body.twitter);
+  snapchat = req.body.snapchat;
+  snapchatUrl = ProfileFieldConvertor.snapchatConvertor(req.body.snapchat);
+  instagram = req.body.instagram;
+  instagramUrl = ProfileFieldConvertor.instagramConvertor(req.body.instagram);
   linkedin = req.body.linkedin;
   facebook = req.body.facebook;
-  snapchat = req.body.snapchat;
   youtube = req.body.youtube;
-  instagram = req.body.instagram;
 
-  whatsapp = req.body.whatsapp;
-  viber = req.body.viber;
+  whatsapp = ProfileFieldConvertor.mobileNumberConvertor(
+    req.body.whatsapp,
+    "+381"
+  );
+  viber = ProfileFieldConvertor.mobileNumberConvertor(req.body.viber, "+381");
   address = req.body.address;
   birthday = req.body.birthday;
 
@@ -44,12 +60,12 @@ exports.fillData = (req, res, next) => {
       user.profileData.contactInfo.email = email;
       user.profileData.contactInfo.workEmail = workEmail;
 
-      user.profileData.socialNetwork.twitter = twitter;
-      user.profileData.socialNetwork.linkedIn = linkedin;
-      user.profileData.socialNetwork.facebook = facebook;
-      user.profileData.socialNetwork.youtube = youtube;
-      user.profileData.socialNetwork.snapchat = snapchat;
-      user.profileData.socialNetwork.instagram = instagram;
+      user.profileData.socialNetwork.twitter = [twitter, twitterUrl];
+      user.profileData.socialNetwork.linkedIn = ["Pogledaj profil", linkedin];
+      user.profileData.socialNetwork.facebook = ["Pogledaj profil", facebook];
+      user.profileData.socialNetwork.youtube = ["Pogledaj profil", youtube];
+      user.profileData.socialNetwork.snapchat = [snapchat, snapchatUrl];
+      user.profileData.socialNetwork.instagram = [instagram, instagramUrl];
 
       user.profileData.directMessage.whatsapp = whatsapp;
       user.profileData.directMessage.viber = viber;
@@ -152,10 +168,20 @@ exports.login = (req, res, next) => {
         "!secrethashtagfortokenvalidationsss!!##432",
         { expiresIn: "1h" }
       );
+      const imageUrl = loadedUser.imageUrl;
 
-      res.status(200).json({
-        token: token,
-        userId: loadedUser._id,
+      fs.readFile(imageUrl, (err, data) => {
+        if (err) throw err;
+
+        let buff = new Buffer(data);
+        let base64data = buff.toString("base64");
+        base64data = "data:image/png;base64," + base64data;
+        res.status(200).json({
+          user: loadedUser,
+          token: token,
+          userId: loadedUser._id,
+          profileImage: base64data,
+        });
       });
     })
     .catch((err) => {
@@ -199,9 +225,23 @@ exports.signup = async (req, res, next) => {
     }
     const id = req.body.id;
     const email = req.body.email;
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
+    const firstName = ProfileFieldConvertor.UpperFirstLetterConvertor(
+      req.body.firstName
+    );
+    const lastName = ProfileFieldConvertor.UpperFirstLetterConvertor(
+      req.body.lastName
+    );
     const password = req.body.password;
+    const companyName = req.body.companyName.toUpperCase();
+    const jobTitle = req.body.jobTitle.toUpperCase();
+    const gender = req.body.gender;
+
+    var urlImage;
+    if (gender === "male") {
+      urlImage = "./public/profile-images/avatarMan.jpg";
+    } else {
+      urlImage = "./public/profile-images/avatarGirl.jpg";
+    }
     const hashedPw = await bcrypt.hash(password, 12);
     crypto.randomBytes(32, async (err, buffer) => {
       if (err) {
@@ -215,12 +255,16 @@ exports.signup = async (req, res, next) => {
         _id: id,
         email: email,
         password: hashedPw,
+        imageUrl: urlImage,
         validation: false,
         validationToken: token,
         validationTokenExpiration: Date.now() + 3600000,
         profileData: {
           firstName: firstName,
           lastName: lastName,
+          companyName: companyName,
+          jobTitle: jobTitle,
+          gender: gender,
         },
       });
       const mailOptions = {

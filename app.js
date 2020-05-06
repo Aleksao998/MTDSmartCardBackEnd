@@ -12,7 +12,17 @@ const Profile = require("./models/profile");
 
 const app = express();
 var morgan = require("morgan");
-
+app.use((req, res, next) => {
+  console.log("usao");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-type, Authorization");
+  next();
+});
+app.use(morgan("tiny"));
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(1, 6)];
 rule.hour = 20;
@@ -23,6 +33,7 @@ var j = schedule.scheduleJob(rule, async () => {
   try {
     console.log("delete users");
     const deleteProfiles = await Profile.deleteMany({
+      validation: false,
       validationTokenExpiration: { $lt: new Date() },
     });
   } catch {
@@ -47,17 +58,6 @@ app.use(helmet.noSniff());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-type, Authorization");
-  next();
-});
-
-app.use(morgan("tiny"));
 app.use("/profile", profileRoutes);
 app.use("/auth", authRoutes);
 

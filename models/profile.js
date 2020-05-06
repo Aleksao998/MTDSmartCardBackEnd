@@ -15,6 +15,9 @@ const profileShema = new Shema(
       type: String,
       required: true,
     },
+    imageUrl: {
+      type: String,
+    },
     validation: Boolean,
     validationToken: String,
     validationTokenExpiration: Date,
@@ -33,6 +36,9 @@ const profileShema = new Shema(
       jobTitle: {
         type: String,
       },
+      gender: {
+        type: String,
+      },
       contactInfo: {
         mobilePhone: {
           type: Number,
@@ -48,24 +54,36 @@ const profileShema = new Shema(
         },
       },
       socialNetwork: {
-        twitter: {
-          type: String,
-        },
-        linkedIn: {
-          type: String,
-        },
-        facebook: {
-          type: String,
-        },
-        snapchat: {
-          type: String,
-        },
-        youtube: {
-          type: String,
-        },
-        instagram: {
-          type: String,
-        },
+        twitter: [
+          {
+            type: String,
+          },
+        ],
+        linkedIn: [
+          {
+            type: String,
+          },
+        ],
+        facebook: [
+          {
+            type: String,
+          },
+        ],
+        snapchat: [
+          {
+            type: String,
+          },
+        ],
+        youtube: [
+          {
+            type: String,
+          },
+        ],
+        instagram: [
+          {
+            type: String,
+          },
+        ],
       },
       directMessage: {
         whatsapp: {

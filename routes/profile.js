@@ -22,4 +22,7 @@ router.post("/updateProfile", isAuth, profileController.updateProfile);
 //GET /profile/checkEmail
 router.post("/uploadImage", profileController.uploadImage);
 
+//GET /profile/deleteUser
+router.post("/deleteUser", profileController.deleteUser);
+
 module.exports = router;

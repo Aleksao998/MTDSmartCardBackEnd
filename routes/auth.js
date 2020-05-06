@@ -35,9 +35,9 @@ const createAccountLimiter = rateLimit({
     "Too many accounts created from this IP, please try again after an hour",
 });
 //POST /auth/login
-router.post("/login", createAccountLimiter, authController.login);
+router.post("/login", authController.login);
 
-//POST /auth/login
+//POST /auth/fillData
 router.post("/fillData", createAccountLimiter, authController.fillData);
 
 //GET /auth/validateProfile/

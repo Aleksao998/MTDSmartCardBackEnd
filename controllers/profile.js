@@ -20,20 +20,32 @@ const upload = multer({
 exports.uploadImage = (req, res, next) => {
   upload(req, res, (err) => {
     if (err) {
-      console.log("aleksa");
-      res.render("index", { msg: err });
-      res.send("error uploading");
     } else {
       var img = req.body.myImage;
-      console.log(img);
+
       var data = img.replace(/^data:image\/\w+;base64,/, "");
+
       var buf = new Buffer(data, "base64");
-      fs.writeFile("./public/profile-images/image.png", buf, function (
-        err,
-        result
-      ) {
-        if (err) console.log("error", err);
-      });
+      Profile.findById(req.body.id)
+        .then((profile) => {
+          profile.imageUrl = "./public/profile-images/" + req.body.imageName;
+          return profile.save();
+        })
+        .then((profileSaved) => {
+          fs.writeFile(
+            "./public/profile-images/" + req.body.imageName,
+            buf,
+            function (err, result) {
+              if (err) console.log("error", err);
+              else {
+                return res.status(200).json({
+                  msg: "image uploaded",
+                });
+              }
+            }
+          );
+        })
+        .catch((err) => {});
     }
   });
 };
@@ -44,18 +56,43 @@ exports.getProfile = (req, res, next) => {
   Profile.findById(userId)
     .then((profile) => {
       if (profile.validation === false) {
-        console.log("usao 201");
         return res.status(201).json({
           profileData: profile,
         });
       } else {
-        console.log("usao 200");
-        return res.status(200).json({
-          profileData: profile,
+        const imageUrl = profile.imageUrl;
+
+        fs.readFile(imageUrl, (err, data) => {
+          if (err) throw err;
+
+          let buff = new Buffer(data);
+          let base64data = buff.toString("base64");
+          base64data = "data:image/png;base64," + base64data;
+          return res.status(200).json({
+            profileData: profile,
+            profileImage: base64data,
+          });
         });
       }
     })
-    .catch((error) => {
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
+};
+
+exports.deleteUser = (req, res, next) => {
+  userId = req.body.id;
+  console.log(userId);
+  Profile.findByIdAndDelete(userId)
+    .then((result) => {
+      res.status(200).json({
+        message: "Profile updated successfully!",
+      });
+    })
+    .catch((err) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
