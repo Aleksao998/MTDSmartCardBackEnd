@@ -4,6 +4,7 @@ var vCardsJS = require("vcards-js");
 var fs = require("fs");
 const path = require("path");
 const multer = require("multer");
+const bcrypt = require("bcryptjs");
 
 const storage = multer.diskStorage({
   destination: "./public/uploads/",
@@ -48,6 +49,21 @@ exports.uploadImage = (req, res, next) => {
         .catch((err) => {});
     }
   });
+};
+
+exports.getAllProfile = (req, res, next) => {
+  Profile.find()
+    .then((result) => {
+      return res.status(200).json({
+        data: result,
+      });
+    })
+    .catch((err) => {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    });
 };
 
 exports.getProfile = (req, res, next) => {
@@ -99,7 +115,45 @@ exports.deleteUser = (req, res, next) => {
       next(err);
     });
 };
+exports.updateProfileAdmin = async (req, res, next) => {
+  email = req.body.email;
+  password = req.body.password;
 
+  id = req.body.id;
+  if (password !== "**********") {
+    try {
+      const hashedPw = await bcrypt.hash(password, 12);
+      const profile = await Profile.findByIdAndUpdate(id, {
+        email,
+        password: hashedPw,
+      });
+      res.status(200).json({
+        message: "Profile updated successfully!",
+      });
+      return;
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  } else {
+    try {
+      const profile = await Profile.findByIdAndUpdate(id, {
+        email,
+      });
+      res.status(200).json({
+        message: "Profile updated successfully!",
+      });
+      return;
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500;
+      }
+      next(err);
+    }
+  }
+};
 exports.updateProfile = (req, res, next) => {
   userId = req.userId;
 

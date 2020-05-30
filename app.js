@@ -1,9 +1,13 @@
 const express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
+
+//Routes
 const profileRoutes = require("./routes/profile");
 const authRoutes = require("./routes/auth");
-const helmet = require("helmet");
+const orderRoutes = require("./routes/orders");
+const adminRoutes = require("./routes/admin");
 const rateLimit = require("express-rate-limit");
 var schedule = require("node-schedule");
 
@@ -45,7 +49,7 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // limit each IP to 100 requests per windowMs
 });
-app.use(limiter);
+//app.use(limiter);
 
 //Hide express
 app.disable("x-powered-by");
@@ -60,6 +64,8 @@ app.use(bodyParser.json());
 
 app.use("/profile", profileRoutes);
 app.use("/auth", authRoutes);
+app.use("/order", orderRoutes);
+app.use("/admin", adminRoutes);
 
 //Error handler
 app.use((error, req, res, next) => {
