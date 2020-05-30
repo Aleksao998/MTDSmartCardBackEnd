@@ -1,4 +1,5 @@
 {
+  "homepage": "http://Aleksao998.github.io/MTDSmartCardAdminPanel",
   "name": "material-dashboard-react",
   "version": "1.8.0",
   "description": "Material Dashboard React. Coded by Creative Tim",
@@ -24,6 +25,8 @@
     "react-swipeable-views": "0.13.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "set PORT=3006 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
@@ -44,7 +47,6 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/material-dashboard-react/issues"
   },
-  "homepage": "https://creativetimofficial.github.io/material-dashboard-react/#/dashboard",
   "optionalDependencies": {
     "@types/googlemaps": "3.37.3",
     "@types/markerclustererplus": "2.1.33",
