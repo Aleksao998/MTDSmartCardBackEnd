@@ -12,14 +12,17 @@ function AdminLogin(props) {
   };
   const loginAdmin = (event) => {
     event.preventDefault();
-    fetch("http://localhost:3003/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: state.email,
-        password: state.password,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: state.email,
+          password: state.password,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401) {
           throw new Error("Email or password incorect");

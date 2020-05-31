@@ -8,7 +8,7 @@ import AppRoutes from "./router/Router.js";
 import "assets/css/material-dashboard-react.css?v=1.8.0";
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <AppRoutes />
   </BrowserRouter>,
 

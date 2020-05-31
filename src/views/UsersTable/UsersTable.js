@@ -27,9 +27,12 @@ export default function UserTable() {
   const [id, setId] = useState("");
 
   React.useEffect(() => {
-    fetch("http://localhost:3003/profile/profileData", {
-      method: "GET",
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile/profileData",
+      {
+        method: "GET",
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           throw new Error("Error creating User");
@@ -58,9 +61,12 @@ export default function UserTable() {
         console.log(err);
       });
 
-    fetch("http://localhost:3003/admin/get", {
-      method: "GET",
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/get",
+      {
+        method: "GET",
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           throw new Error("Error creating User");
@@ -96,16 +102,19 @@ export default function UserTable() {
   }, []);
 
   const deleteUser = (id) => {
-    fetch("http://localhost:3003/profile/deleteUser", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile/deleteUser",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -118,16 +127,19 @@ export default function UserTable() {
   };
 
   const deleteAdmin = (id) => {
-    fetch("http://localhost:3003/admin/deleteAdmin", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/deleteAdmin",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -141,18 +153,21 @@ export default function UserTable() {
 
   const updateUser = (data) => {
     console.log(data.password);
-    fetch("http://localhost:3003/profile/updateProfileAdmin", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: data.id,
-        email: data.email,
-        password: data.password,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile/updateProfileAdmin",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: data.id,
+          email: data.email,
+          password: data.password,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -166,18 +181,21 @@ export default function UserTable() {
 
   const updateAdmin = (data) => {
     console.log(data.password);
-    fetch("http://localhost:3003/admin/updateAdmin", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: data.id,
-        email: data.email,
-        password: data.password,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/updateAdmin",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: data.id,
+          email: data.email,
+          password: data.password,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -189,15 +207,18 @@ export default function UserTable() {
       });
   };
   const createAdmin = (data) => {
-    fetch("http://localhost:3003/admin/signup", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: data.id,
-        email: data.email,
-        password: data.password,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/signup",
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id: data.id,
+          email: data.email,
+          password: data.password,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {

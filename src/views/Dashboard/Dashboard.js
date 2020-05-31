@@ -32,9 +32,12 @@ export default function Dashboard() {
   const [timeUpdate, setTimeUpdate] = useState("");
   const classes = useStyles();
   React.useEffect(() => {
-    fetch("http://localhost:3003/order/orders", {
-      method: "GET",
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/orders",
+      {
+        method: "GET",
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           throw new Error("Error creating User");

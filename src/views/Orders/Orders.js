@@ -29,9 +29,12 @@ export default function Orders() {
   const classes = useStyles();
 
   React.useEffect(() => {
-    fetch("http://localhost:3003/order/orders", {
-      method: "GET",
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/orders",
+      {
+        method: "GET",
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           throw new Error("Error creating User");
@@ -111,16 +114,19 @@ export default function Orders() {
   }, [qrValue]);
 
   const deleteOrder = (id) => {
-    fetch("http://localhost:3003/order/deleteOrder", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/deleteOrder",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -133,22 +139,26 @@ export default function Orders() {
   };
 
   const updateUser = (data) => {
-    fetch("http://localhost:3003/order/updateOrder/" + data.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: data.name,
-        lastName: data.lastName,
-        address: data.address,
-        city: data.city,
-        postCode: data.postCode,
-        email: data.email,
-        phoneNumber: data.phoneNumber,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/updateOrder/" +
+        data.id,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          lastName: data.lastName,
+          address: data.address,
+          city: data.city,
+          postCode: data.postCode,
+          email: data.email,
+          phoneNumber: data.phoneNumber,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -161,16 +171,20 @@ export default function Orders() {
   };
 
   const changeTable = (data, tableName) => {
-    fetch("http://localhost:3003/order/updateOrder/" + data.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        status: tableName,
-      }),
-    })
+    fetch(
+      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/updateOrder/" +
+        data.id,
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          status: tableName,
+        }),
+      }
+    )
       .then((res) => {
         console.log(res);
         if (res.status !== 200) {
@@ -360,7 +374,8 @@ export default function Orders() {
               tooltip: "QR image",
               onClick: (event, rowData) => {
                 setQrValue(
-                  "http://localhost:3000/profile-page/" + rowData.cardId
+                  "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile-page/" +
+                    rowData.cardId
                 );
                 setId(rowData.cardId);
               },
@@ -440,7 +455,8 @@ export default function Orders() {
               tooltip: "QR image",
               onClick: (event, rowData) => {
                 setQrValue(
-                  "http://localhost:3000/profile-page/" + rowData.cardId
+                  "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile-page/" +
+                    rowData.cardId
                 );
                 setId(rowData.cardId);
               },
