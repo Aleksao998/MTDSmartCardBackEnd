@@ -30,7 +30,7 @@ export default function Orders() {
 
   React.useEffect(() => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/orders",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/order/orders",
       {
         method: "GET",
       }
@@ -115,7 +115,7 @@ export default function Orders() {
 
   const deleteOrder = (id) => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/deleteOrder",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/order/deleteOrder",
       {
         method: "POST",
         headers: {
@@ -140,7 +140,7 @@ export default function Orders() {
 
   const updateUser = (data) => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/updateOrder/" +
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/order/updateOrder/" +
         data.id,
       {
         method: "POST",
@@ -172,7 +172,7 @@ export default function Orders() {
 
   const changeTable = (data, tableName) => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/updateOrder/" +
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/order/updateOrder/" +
         data.id,
       {
         method: "POST",
@@ -374,7 +374,7 @@ export default function Orders() {
               tooltip: "QR image",
               onClick: (event, rowData) => {
                 setQrValue(
-                  "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile-page/" +
+                  "https://aleksao998.github.io/MTDSmartCard/profile-page/" +
                     rowData.cardId
                 );
                 setId(rowData.cardId);
@@ -455,8 +455,7 @@ export default function Orders() {
               tooltip: "QR image",
               onClick: (event, rowData) => {
                 setQrValue(
-                  "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile-page/" +
-                    rowData.cardId
+                  "https://aleksao998.github.io/MTDSmartCard/" + rowData.cardId
                 );
                 setId(rowData.cardId);
               },

@@ -28,7 +28,7 @@ export default function UserTable() {
 
   React.useEffect(() => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile/profileData",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/profile/profileData",
       {
         method: "GET",
       }
@@ -62,7 +62,7 @@ export default function UserTable() {
       });
 
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/get",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/admin/get",
       {
         method: "GET",
       }
@@ -103,7 +103,7 @@ export default function UserTable() {
 
   const deleteUser = (id) => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile/deleteUser",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/profile/deleteUser",
       {
         method: "POST",
         headers: {
@@ -128,7 +128,7 @@ export default function UserTable() {
 
   const deleteAdmin = (id) => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/deleteAdmin",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/admin/deleteAdmin",
       {
         method: "POST",
         headers: {
@@ -154,7 +154,7 @@ export default function UserTable() {
   const updateUser = (data) => {
     console.log(data.password);
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/profile/updateProfileAdmin",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/profile/updateProfileAdmin",
       {
         method: "POST",
         headers: {
@@ -182,7 +182,7 @@ export default function UserTable() {
   const updateAdmin = (data) => {
     console.log(data.password);
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/updateAdmin",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/admin/updateAdmin",
       {
         method: "POST",
         headers: {
@@ -208,10 +208,13 @@ export default function UserTable() {
   };
   const createAdmin = (data) => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/admin/signup",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/admin/signup",
       {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
           id: data.id,
           email: data.email,

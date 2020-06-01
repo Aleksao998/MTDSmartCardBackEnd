@@ -33,7 +33,7 @@ export default function Dashboard() {
   const classes = useStyles();
   React.useEffect(() => {
     fetch(
-      "http://ec2-54-93-213-77.eu-central-1.compute.amazonaws.com/order/orders",
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/order/orders",
       {
         method: "GET",
       }

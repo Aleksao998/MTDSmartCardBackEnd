@@ -16,11 +16,17 @@ function AdminLogin(props) {
 
   const loginAdmin = (event) => {
     event.preventDefault();
-
-    axios
-      .get(
-        "http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/profile/profileData"
-      )
+    fetch(
+      "https://cors-anywhere.herokuapp.com/http://ec2-35-158-214-30.eu-central-1.compute.amazonaws.com:3001/admin/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: state.email,
+          password: state.password,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401) {
           throw new Error("Email or password incorect");
@@ -28,11 +34,15 @@ function AdminLogin(props) {
         if (res.status !== 200) {
           throw new Error("Techical error");
         }
-        console.log(res);
+        return res.json();
       })
-
+      .then((resData) => {
+        localStorage.setItem("token", resData.token);
+        localStorage.setItem("id", resData.data);
+        props.authenticateUser(resData.token, resData.data);
+        props.history.push("/admin/dashboard");
+      })
       .catch((err) => {
-        console.log(err);
         setError(err.message);
         return;
       });
