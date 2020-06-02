@@ -18,7 +18,7 @@ const ProfileFieldConvertor = require("../utils/ProfileFieldConvertor/ProfileFie
 
 exports.fillData = (req, res, next) => {
   id = req.body.id;
-
+  console.log(req.body);
   mobileNumber = ProfileFieldConvertor.mobileNumberConvertor(
     req.body.mobileNumber,
     "+381"
@@ -47,6 +47,22 @@ exports.fillData = (req, res, next) => {
   viber = ProfileFieldConvertor.mobileNumberConvertor(req.body.viber, "+381");
   address = req.body.address;
   birthday = req.body.birthday;
+
+  if (req.body.mobileNumber == "") {
+    mobileNumber = "";
+  }
+  if (req.body.homeNumber == "") {
+    homeNumber = "";
+  }
+  if (req.body.twitter == "") {
+    twitterUrl = "";
+  }
+  if (req.body.snapchat == "") {
+    snapchatUrl = "";
+  }
+  if (req.body.instagram == "") {
+    instagramUrl = "";
+  }
 
   Profile.findById(id)
     .then((user) => {
@@ -256,7 +272,7 @@ exports.signup = async (req, res, next) => {
         email: email,
         password: hashedPw,
         imageUrl: urlImage,
-        validation: false,
+        validation: true,
         validationToken: token,
         validationTokenExpiration: Date.now() + 3600000,
         profileData: {
@@ -267,6 +283,7 @@ exports.signup = async (req, res, next) => {
           gender: gender,
         },
       });
+      /*
       const mailOptions = {
         from: "opacicaleksa4@gmail.com",
         to: email,
@@ -288,9 +305,11 @@ exports.signup = async (req, res, next) => {
         }
         smtpTransport.close();
       });
+      */
       const savedProfile = await profile.save();
       res.status(200).json({
         msg: "Succesfull",
+        id: id,
       });
     });
   } catch (err) {
