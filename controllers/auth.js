@@ -309,6 +309,7 @@ exports.signup = async (req, res, next) => {
       const savedProfile = await profile.save();
       res.status(200).json({
         msg: "Succesfull",
+        token: token,
         id: id,
       });
     });
