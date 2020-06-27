@@ -18,7 +18,27 @@ const ProfileFieldConvertor = require("../utils/ProfileFieldConvertor/ProfileFie
 
 exports.fillData = (req, res, next) => {
   id = req.body.id;
-  console.log(req.body);
+  var showData = {
+    firstName: true,
+    lastName: true,
+    companyName: true,
+    jobTitle: true,
+    gender: true,
+    mobilePhone: true,
+    homePhone: true,
+    email: true,
+    workEmail: true,
+    twitter: true,
+    linkedIn: true,
+    facebook: true,
+    snapchat: true,
+    youtube: true,
+    instagram: true,
+    whatsapp: true,
+    viber: true,
+    adress: true,
+    birthday: true,
+  };
   mobileNumber = ProfileFieldConvertor.mobileNumberConvertor(
     req.body.mobileNumber,
     "+381"
@@ -48,20 +68,64 @@ exports.fillData = (req, res, next) => {
   address = req.body.address;
   birthday = req.body.birthday;
 
+  if (req.body.firstName == "") {
+    showData.firstName = false;
+  }
+  if (req.body.lastName == "") {
+    showData.lastName = false;
+  }
+  if (req.body.companyName == "") {
+    showData.companyName = false;
+  }
+  if (req.body.jobTitle == "") {
+    showData.jobTitle = false;
+  }
   if (req.body.mobileNumber == "") {
     mobileNumber = "";
+    showData.mobilePhone = false;
   }
   if (req.body.homeNumber == "") {
     homeNumber = "";
+    showData.homePhone = false;
+  }
+  if (req.body.email == "") {
+    showData.email = false;
+  }
+  if (req.body.workEmail == "") {
+    showData.workEmail = false;
   }
   if (req.body.twitter == "") {
     twitterUrl = "";
+    showData.twitter = false;
   }
   if (req.body.snapchat == "") {
     snapchatUrl = "";
+    showData.snapchat = false;
   }
   if (req.body.instagram == "") {
     instagramUrl = "";
+    showData.instagram = false;
+  }
+  if (req.body.facebook == "") {
+    showData.facebook = false;
+  }
+  if (req.body.linkedIn == "") {
+    showData.linkedIn = false;
+  }
+  if (req.body.youtube == "") {
+    showData.youtube = false;
+  }
+  if (req.body.whatsapp == "") {
+    showData.whatsapp = false;
+  }
+  if (req.body.viber == "") {
+    showData.viber = false;
+  }
+  if (req.body.address == "") {
+    showData.address = false;
+  }
+  if (req.body.birthday == "") {
+    showData.birthday = false;
   }
 
   Profile.findById(id)
@@ -88,6 +152,8 @@ exports.fillData = (req, res, next) => {
 
       user.profileData.personalInfo.adress = address;
       user.profileData.personalInfo.birthday = birthday;
+
+      user.showData = showData;
 
       return user.save();
     })

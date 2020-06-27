@@ -101,7 +101,7 @@ exports.getProfile = (req, res, next) => {
 
 exports.deleteUser = (req, res, next) => {
   userId = req.body.id;
-  console.log(userId);
+
   Profile.findByIdAndDelete(userId)
     .then((result) => {
       res.status(200).json({
@@ -202,7 +202,7 @@ exports.updateProfile = (req, res, next) => {
 
       profile.profileData.personalInfo.address = address;
       profile.profileData.personalInfo.birthday = birthday;
-
+      profile.showData = req.body.showData;
       return profile.save();
     })
     .then((result) => {
@@ -220,7 +220,7 @@ exports.updateProfile = (req, res, next) => {
 
 exports.checkEmail = (req, res, next) => {
   const email = arrayWrap(req.query.email || "");
-  console.log("Email : " + email[0]);
+
   const _email = email[0];
   Profile.findOne({ email: _email })
     .then((result) => {
@@ -246,9 +246,7 @@ exports.checkEmail = (req, res, next) => {
 
 exports.createVCF = (req, res, next) => {
   var vCard = vCardsJS();
-
   const firstName = arrayWrap(req.query.firstName || "");
-
   vCard.firstName = firstName[0];
 
   const lastName = arrayWrap(req.query.lastName || "");
@@ -275,19 +273,23 @@ exports.createVCF = (req, res, next) => {
 
   //Social network
   const facebook = arrayWrap(req.query.facebook || "");
-  vCard.socialUrls["facebook"] = facebook[0];
+  vCard.socialUrls["facebook"] = facebook[0].split(",")[1];
 
   const linkedIn = arrayWrap(req.query.linkedIn || "");
-  vCard.socialUrls["linkedIn"] = linkedIn[0];
+  vCard.socialUrls["linkedIn"] = linkedIn[0].split(",")[1];
 
   const twitter = arrayWrap(req.query.twitter || "");
-  vCard.socialUrls["twitter"] = twitter[0];
+  vCard.socialUrls["twitter"] = twitter[0].split(",")[1];
 
   const snapchat = arrayWrap(req.query.snapchat || "");
-  vCard.socialUrls["snapchat"] = snapchat[0];
+
+  vCard.socialUrls["snapchat"] = snapchat[0].split(",")[1];
 
   const youtube = arrayWrap(req.query.youtube || "");
-  vCard.socialUrls["youtube"] = youtube[0];
+  vCard.socialUrls["youtube"] = youtube[0].split(",")[1];
+
+  const instagram = arrayWrap(req.query.instagram || "");
+  vCard.socialUrls["instagram"] = instagram[0].split(",")[1];
 
   //Direct messages
 
@@ -295,12 +297,11 @@ exports.createVCF = (req, res, next) => {
   const homeAddress = arrayWrap(req.query.address || "");
   vCard.homeAddress.street = homeAddress[0];
 
-  res.set("Content-Type", 'text/vcard; name="enesser.vcf"');
-  res.set("Content-Disposition", 'inline; filename="enesser.vcf"');
+  res.set("Content-Type", "text/vcard");
+
   res.send(vCard.getFormattedString());
 };
 exports.findById = (req, res, next) => {
-  console.log("findById");
   const id = req.params.id;
 
   Profile.findById(id)

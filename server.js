@@ -17,7 +17,7 @@ const Profile = require("./models/profile");
 const app = express();
 var morgan = require("morgan");
 app.use((req, res, next) => {
-  console.log("usao");
+  console.log("usaaooo");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
