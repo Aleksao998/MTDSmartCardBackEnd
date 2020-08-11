@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const helmet = require("helmet");
 
 //Routes
+const contactRoutes = require("./routes/contact");
 const profileRoutes = require("./routes/profile");
 const authRoutes = require("./routes/auth");
 const orderRoutes = require("./routes/orders");
@@ -17,7 +18,6 @@ const Profile = require("./models/profile");
 const app = express();
 var morgan = require("morgan");
 app.use((req, res, next) => {
-  console.log("usaaooo");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -62,6 +62,7 @@ app.use(helmet.noSniff());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.use("/contact", contactRoutes);
 app.use("/profile", profileRoutes);
 app.use("/auth", authRoutes);
 app.use("/order", orderRoutes);

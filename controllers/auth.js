@@ -195,7 +195,7 @@ exports.validateProfile = async (req, res, next) => {
       });
     }
     if (user.validationTokenExpiration > Date.now()) {
-      console.log("usao ne treba");
+    
       user.validation = true;
       const saveUser = await user.save();
 
@@ -204,7 +204,7 @@ exports.validateProfile = async (req, res, next) => {
         userId: user._id,
       });
     } else {
-      console.log("usao");
+ 
       const userDeleted = await Profile.findOneAndDelete({
         validationToken: token,
       });

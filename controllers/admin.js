@@ -64,7 +64,6 @@ exports.deleteAdmin = async (req, res, next) => {
 };
 
 exports.getAllAdmins = async (req, res, next) => {
-  console.log("usao");
   Admin.find()
     .then((result) => {
       return res.status(200).json({

@@ -24,11 +24,9 @@ const profileShema = new Shema(
     profileData: {
       firstName: {
         type: String,
-        required: true,
       },
       lastName: {
         type: String,
-        required: true,
       },
       companyName: {
         type: String,
@@ -41,10 +39,10 @@ const profileShema = new Shema(
       },
       contactInfo: {
         mobilePhone: {
-          type: Number,
+          type: String,
         },
         homePhone: {
-          type: Number,
+          type: String,
         },
         email: {
           type: String,
@@ -87,10 +85,10 @@ const profileShema = new Shema(
       },
       directMessage: {
         whatsapp: {
-          type: Number,
+          type: String,
         },
         viber: {
-          type: Number,
+          type: String,
         },
       },
       personalInfo: {

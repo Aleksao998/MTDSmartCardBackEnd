@@ -6,6 +6,9 @@ const path = require("path");
 const multer = require("multer");
 const bcrypt = require("bcryptjs");
 
+//Utils
+const ProfileFieldConvertor = require("../utils/ProfileFieldConvertor/ProfileFieldCOnvertor");
+
 const storage = multer.diskStorage({
   destination: "./public/uploads/",
   filename: function (req, file, cb) {
@@ -162,21 +165,37 @@ exports.updateProfile = (req, res, next) => {
   companyName = req.body.companyName;
   jobTitle = req.body.jobTitle;
 
-  mobileNumber = req.body.mobileNumber;
-  homeNumber = req.body.homeNumber;
+  mobileNumber = ProfileFieldConvertor.mobileNumberConvertor(
+    req.body.mobileNumber,
+    "+381"
+  );
+  homeNumber = ProfileFieldConvertor.homeNumberConvertor(
+    req.body.homeNumber,
+    "+381"
+  );
   email = req.body.email;
   workEmail = req.body.workEmail;
 
-  twitter = req.body.twitter;
-  linkedin = req.body.linkedin;
-  facebook = req.body.facebook;
-  snapchat = req.body.snapchat;
-  youtube = req.body.youtube;
-  whatsapp = req.body.whatsapp;
-  viber = req.body.viber;
+  twitter = req.body.twitter[0];
+  twitterUrl = ProfileFieldConvertor.twitterConvertor(req.body.twitter[0]);
 
+  snapchat = req.body.snapchat[0];
+  snapchatUrl = ProfileFieldConvertor.snapchatConvertor(req.body.snapchat[0]);
+
+  instagram = req.body.instagram[0];
+  instagramUrl = ProfileFieldConvertor.instagramConvertor(
+    req.body.instagram[0]
+  );
+  linkedin = req.body.linkedin[1];
+  facebook = req.body.facebook[1];
+  youtube = req.body.youtube[1];
+
+  whatsapp = ProfileFieldConvertor.mobileNumberConvertor(
+    req.body.whatsapp,
+    "+381"
+  );
+  viber = ProfileFieldConvertor.mobileNumberConvertor(req.body.viber, "+381");
   address = req.body.address;
-
   birthday = req.body.birthday;
 
   Profile.findById(userId)
@@ -191,11 +210,19 @@ exports.updateProfile = (req, res, next) => {
       profile.profileData.contactInfo.email = email;
       profile.profileData.contactInfo.workEmail = workEmail;
 
-      profile.profileData.socialNetwork.twitter = twitter;
-      profile.profileData.socialNetwork.linkedIn = linkedin;
-      profile.profileData.socialNetwork.facebook = facebook;
-      profile.profileData.socialNetwork.youtube = youtube;
-      profile.profileData.socialNetwork.snapchat = snapchat;
+      profile.profileData.socialNetwork.twitter = [twitter, twitterUrl];
+
+      profile.profileData.socialNetwork.linkedIn = [
+        "Pogledaj profil",
+        linkedin,
+      ];
+      profile.profileData.socialNetwork.facebook = [
+        "Pogledaj profil",
+        facebook,
+      ];
+      profile.profileData.socialNetwork.youtube = ["Pogledaj profil", youtube];
+      profile.profileData.socialNetwork.snapchat = [snapchat, snapchatUrl];
+      profile.profileData.socialNetwork.instagram = [instagram, instagramUrl];
 
       profile.profileData.directMessage.whatsapp = whatsapp;
       profile.profileData.directMessage.viber = viber;

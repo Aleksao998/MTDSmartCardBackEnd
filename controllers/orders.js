@@ -11,7 +11,6 @@ exports.createOrder = async (req, res, next) => {
       arr.push(element._id);
     });
     for (var i = 0; i < req.body.number; i++) {
-      console.log("usao0");
       var id = "";
       do {
         var result = "";
