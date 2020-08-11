@@ -17,15 +17,7 @@ const Profile = require("./models/profile");
 
 const app = express();
 var morgan = require("morgan");
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-type, Authorization");
-  next();
-});
+app.use(cors());
 app.use(morgan("tiny"));
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = [0, new schedule.Range(1, 6)];
