@@ -103,79 +103,60 @@ const profileShema = new Shema(
     showData: {
       firstName: {
         type: Boolean,
-        required: true,
       },
       lastName: {
         type: Boolean,
-        required: true,
       },
       companyName: {
         type: Boolean,
-        required: true,
       },
       jobTitle: {
         type: Boolean,
-        required: true,
       },
       gender: {
         type: Boolean,
-        required: true,
       },
       mobilePhone: {
         type: Boolean,
-        required: true,
       },
       homePhone: {
         type: Boolean,
-        required: true,
       },
       email: {
         type: Boolean,
-        required: true,
       },
       workEmail: {
         type: Boolean,
-        required: true,
       },
       twitter: {
         type: Boolean,
-        required: true,
       },
       linkedIn: {
         type: Boolean,
-        required: true,
       },
       facebook: {
         type: Boolean,
-        required: true,
       },
       snapchat: {
         type: Boolean,
-        required: true,
       },
       youtube: {
         type: Boolean,
-        required: true,
       },
       instagram: {
         type: Boolean,
-        required: true,
       },
       whatsapp: {
         type: Boolean,
-        required: true,
       },
       viber: {
         type: Boolean,
-        required: true,
       },
       adress: {
         type: Boolean,
-        required: true,
       },
       birthday: {
         type: Boolean,
-        required: true,
       },
     },
   },
