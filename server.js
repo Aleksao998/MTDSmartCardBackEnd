@@ -2,6 +2,7 @@ const express = require("express");
 var bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
+const cors = require("cors");
 
 //Routes
 const contactRoutes = require("./routes/contact");
